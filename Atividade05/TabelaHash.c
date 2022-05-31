@@ -4,6 +4,7 @@
 //#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "TabelaHash.h" //inclui os Protótipos
 
 //Definição do tipo Hash
@@ -17,7 +18,7 @@ Hash* criaHash(int TABLE_SIZE){
     if(ha != NULL){
         int i;
         ha->TABLE_SIZE = TABLE_SIZE;
-        ha->itens = (struct aluno**) malloc(TABLE_SIZE * sizeof(struct aluno*));
+        ha->itens = (struct aluno*) malloc(TABLE_SIZE * sizeof (struct aluno));
         if(ha->itens == NULL){
             free(ha);
             return NULL;
@@ -187,11 +188,18 @@ int insereHash_Encadeamento_Separado(Hash* ha, struct aluno al){
     *novo = al;
 
     int pos = chaveDivisao(al.matricula,ha->TABLE_SIZE);
+    if(ha->itens[pos]!=NULL)
+        //printf("deu colisao");
     novo->prox = ha->itens[pos];
     ha->itens[pos] = novo;
     return 1;
 }
-
+int isEmpty(Hash* ha, int matricula){
+    if(ha->itens[chaveDivisao(matricula,ha->TABLE_SIZE)] == NULL)
+        return 1;
+    else
+        return 0;
+}
 
 int buscaHash_Encadeamento_Separado(Hash* ha, int mat, struct aluno* al){
     if(ha == NULL)
@@ -200,8 +208,8 @@ int buscaHash_Encadeamento_Separado(Hash* ha, int mat, struct aluno* al){
     struct aluno *aux = (struct aluno*) malloc(sizeof (struct aluno));
     if(aux == NULL)
         return 0;
-
-    *aux = *al;
+    int pos = chaveDivisao(mat,ha->TABLE_SIZE);
+    aux = ha->itens[pos];
 
     while (aux != NULL && aux->matricula != mat){
         aux = aux->prox;

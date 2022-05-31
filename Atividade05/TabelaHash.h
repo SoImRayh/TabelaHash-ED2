@@ -22,6 +22,7 @@ int buscaHash_EnderAberto(Hash* ha, int mat, struct aluno* al);
 
 int insereHash_Encadeamento_Separado(Hash* ha, struct aluno al);
 int buscaHash_Encadeamento_Separado(Hash* ha, int mat, struct aluno* al);
+int isEmpty(Hash* hash, int mat);
 
 /*
 int chaveDivisao(int chave, int TABLE_SIZE);
